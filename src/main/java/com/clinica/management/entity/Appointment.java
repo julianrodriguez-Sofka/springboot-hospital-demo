@@ -5,27 +5,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "patients")
-public class Patient {
+public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String dni;
-    private String name;
-    private String email;
-    private Integer age;
+
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    @OneToMany(mappedBy = "patient")
-    private List<Appointment> appointments;
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 
+    private Boolean wasAttended;
 }

@@ -1,13 +1,10 @@
 package com.clinica.management.dto.request;
 
-import lombok.*;
+import lombok.Data;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-public class CreatePatientDTO {
+@Data
+public class UpdatePatientDTO {
+    private Long id;
     private String dni;
     private String name;
     private String email;

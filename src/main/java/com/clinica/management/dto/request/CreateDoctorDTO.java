@@ -7,9 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class CreatePatientDTO {
-    private String dni;
+public class CreateDoctorDTO {
     private String name;
-    private String email;
-    private Integer age;
+    private String speciality;
 }

@@ -6,6 +6,7 @@ import com.clinica.management.dto.response.PatientDTO;
 import com.clinica.management.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class PatientController {
     }
 
     @PostMapping // /patients
-    public ResponseEntity<PatientDTO> savePatient(@RequestBody CreatePatientDTO createPatientDTO){
+    public ResponseEntity<PatientDTO> savePatient(@Valid @RequestBody CreatePatientDTO createPatientDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(patientService.save(createPatientDTO));
     }
 
@@ -40,7 +41,7 @@ public class PatientController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<PatientDTO> updatePatient(@RequestBody UpdatePatientDTO patientDTO){
+    public ResponseEntity<PatientDTO> updatePatient(@Valid @RequestBody UpdatePatientDTO patientDTO){
         return ResponseEntity.ok(patientService.update(patientDTO));
     }
 

@@ -2,7 +2,8 @@ package com.clinica.management.service.impl;
 
 import com.clinica.management.dto.request.UpdatePatientDTO;
 import com.clinica.management.entity.Patient;
-import com.clinica.management.service.DoctorService;
+import com.clinica.management.exception.DataNotFoundException;
+import com.clinica.management.exception.DuplicatedDataException;
 import com.clinica.management.service.PatientService;
 import org.springframework.stereotype.Service;
 import com.clinica.management.dto.request.CreatePatientDTO;
@@ -28,6 +29,10 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO save(CreatePatientDTO createPatientDTO) {
         Patient p = mapper.toEntity(createPatientDTO);
+        if(patientRepository.existsByDni(createPatientDTO.getDni())){
+            throw new DuplicatedDataException("Patient", createPatientDTO.getDni());
+        }
+
         Patient patientSaved = patientRepository.save(p);
         PatientDTO patientDTOSaved = mapper.toDTO(patientSaved);
         return patientDTOSaved;
@@ -43,7 +48,13 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO getById(Long id) {
-        return mapper.toDTO(patientRepository.getById(id));
+        /*if(patientRepository.existsById(id)){
+            return mapper.toDTO(patientRepository.findById(id).get());
+        }else{
+            throw new PatientNotFoundException(id);
+        }*/
+        return mapper.toDTO(patientRepository.findById(id).orElseThrow(() -> new DataNotFoundException(id, "Patient")));
+
     }
 
     @Override

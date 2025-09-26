@@ -19,7 +19,7 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper mapper;
 
-    private PatientServiceImpl(PatientRepository patientRepository,
+    public PatientServiceImpl(PatientRepository patientRepository,
                                PatientMapper mapper) {
 
         this.patientRepository = patientRepository;
@@ -28,11 +28,12 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO save(CreatePatientDTO createPatientDTO) {
-        Patient p = mapper.toEntity(createPatientDTO);
+
         if(patientRepository.existsByDni(createPatientDTO.getDni())){
             throw new DuplicatedDataException("Patient", createPatientDTO.getDni());
         }
 
+        Patient p = mapper.toEntity(createPatientDTO);
         Patient patientSaved = patientRepository.save(p);
         PatientDTO patientDTOSaved = mapper.toDTO(patientSaved);
         return patientDTOSaved;
